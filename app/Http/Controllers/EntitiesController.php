@@ -37,7 +37,7 @@ class EntitiesController extends Controller
      */
     public function index(Request $request, $id_user)
     {
-        $entities = Entities::with('quotes')->where('id_user',$id_user)->get();
+        $entities = Entities::where('id_user',$id_user)->get();
         return response()->json(["data"=>$entities],200);
     }
 
@@ -76,7 +76,7 @@ class EntitiesController extends Controller
      */
     public function watch($id){
         try{
-            $service = Entities::with('quotes')->find($id);
+            $service = Entities::find($id);
             return response()->json(["data"=>$service],200);
         }catch (Exception $e) {
             return response()->json(["data"=>"fail"],200);

@@ -11,4 +11,9 @@ class Quotes extends Model
     protected $fillable = [
         'id','id_entity','name','phone','ws','email','identification','date','service','note','status'
     ];
+
+    public function entities()
+    {
+    	return $this->belongsTo('App\Models\Quotes', 'id_entity');
+    }
 }

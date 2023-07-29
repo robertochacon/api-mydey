@@ -9,6 +9,11 @@ class Services extends Model
     protected $table = 'services';
 
     protected $fillable = [
-        'id','name','description','price','status'
+        'id','id_entity','name','description','price','status'
     ];
+
+    public function entities()
+    {
+    	return $this->belongsTo('App\Models\Services', 'id_entity');
+    }
 }

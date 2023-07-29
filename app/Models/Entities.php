@@ -12,10 +12,5 @@ class Entities extends Model
         'id','id_user','name','description','phone','email','latitude','length','image','status'
     ];
 
-    public function quotes()
-    {
-    	return $this->belongsTo('App\Models\Quotes', 'id_entity');
-    }
-
 }
 

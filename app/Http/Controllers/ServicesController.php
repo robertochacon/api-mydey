@@ -35,9 +35,9 @@ class ServicesController extends Controller
      *      )
      * )
      */
-    public function index()
+    public function index(Request $request, $id_entity)
     {
-        $services = Services::all();
+        $services = Services::where('id_entity',$id_entity)->get();
         return response()->json(["data"=>$services],200);
     }
 

@@ -35,7 +35,7 @@ Route::group([
     Route::post('/me/', [AuthController::class, 'me']);
 
     //services
-    Route::get('/services/', [ServicesController::class, 'index']);
+    Route::get('/services/all/{id}/', [ServicesController::class, 'index']);
     Route::get('/services/{id}/', [ServicesController::class, 'watch']);
     Route::post('/services/', [ServicesController::class, 'register']);
     Route::put('/services/{id}/', [ServicesController::class, 'update']);
