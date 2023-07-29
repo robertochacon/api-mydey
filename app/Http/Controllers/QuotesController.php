@@ -157,7 +157,7 @@ class QuotesController extends Controller
 
     public function update(Request $request, $id){
         try{
-            $quotes = Quotes::find($id);
+            $quotes = Quotes::where('id',$id)->first();
             $quotes->update($request->all());
             return response()->json(["data"=>"ok"],200);
         }catch (Exception $e) {
