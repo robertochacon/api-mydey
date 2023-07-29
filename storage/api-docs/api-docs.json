@@ -385,7 +385,7 @@
                     }
                 ]
             },
-            "put": {
+            "post": {
                 "tags": [
                     "Entities"
                 ],
@@ -518,6 +518,16 @@
                 "summary": "All quotes",
                 "description": "All quotes",
                 "operationId": "all_quotes",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

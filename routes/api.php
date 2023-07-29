@@ -42,10 +42,10 @@ Route::group([
     Route::delete('/services/{id}/', [ServicesController::class, 'delete']);
 
     //entities
-    Route::get('/entities/', [EntitiesController::class, 'index']);
+    Route::get('/entities/all/{id}/', [EntitiesController::class, 'index']);
     Route::get('/entities/{id}/', [EntitiesController::class, 'watch']);
     Route::post('/entities/', [EntitiesController::class, 'register']);
-    Route::put('/entities/{id}/', [EntitiesController::class, 'update']);
+    Route::post('/entities/{id}/', [EntitiesController::class, 'update']);
     Route::delete('/entities/{id}/', [EntitiesController::class, 'delete']);
 
     //quotes

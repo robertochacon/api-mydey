@@ -41,9 +41,9 @@ class QuotesController extends Controller
      *      )
      * )
      */
-    public function index(Request $request, $id)
+    public function index(Request $request, $id_entity)
     {
-        $quotes = Quotes::where('id_entity',$id)->get();
+        $quotes = Quotes::where('id_entity',$id_entity)->get();
         return response()->json(["data"=>$quotes],200);
     }
 

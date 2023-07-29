@@ -35,9 +35,9 @@ class EntitiesController extends Controller
      *      )
      * )
      */
-    public function index()
+    public function index(Request $request, $id_user)
     {
-        $entities = Entities::with('quotes')->get();
+        $entities = Entities::with('quotes')->where('id_user',$id_user)->get();
         return response()->json(["data"=>$entities],200);
     }
 
@@ -111,14 +111,22 @@ class EntitiesController extends Controller
      *  )
      */
     public function register(Request $request)
-    {
-        $entities = new Entities(request()->all());
+    {        
+        $data = $request->all();
+        
+        if ($request->hasFile('image')) {
+            $uploadFile = $request->file('image');
+            $file_name = $uploadFile->hashName();
+            $uploadFile->storeAs('public/entities', $file_name);
+            $data['image'] = request()->getSchemeAndHttpHost().'/storage/entities/'.$file_name;
+        }
+        $entities = new Entities($data);
         $entities->save();
         return response()->json(["data"=>$entities],200);
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *      path="/api/entities/{id}",
      *      operationId="update_entities",
      *      tags={"Entities"},
@@ -154,8 +162,17 @@ class EntitiesController extends Controller
     public function update(Request $request, $id){
         try{
             $entities = Entities::where('id',$id)->first();
-            $entities->update($request->all());
-            return response()->json(["data"=>"ok"],200);
+            $data = $request->all();
+
+            if ($request->hasFile('image')) {
+                $uploadFile = $request->file('image');
+                $file_name = $uploadFile->hashName();
+                $uploadFile->storeAs('public/entities', $file_name);
+                $data['image'] = request()->getSchemeAndHttpHost().'/storage/entities/'.$file_name;
+            }
+
+            $entities->update($data);
+            return response()->json(["data"=>$entities],200);
         }catch (Exception $e) {
             return response()->json(["data"=>"fail"],200);
         }

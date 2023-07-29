@@ -18,7 +18,7 @@ class CreateServicesTable extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->integer('price')->nullable();
-            $table->integer('image')->nullable();
+            $table->text('image')->nullable();
             $table->enum('status',['active','inactive'])->default('active');
             $table->timestamps();
         });
