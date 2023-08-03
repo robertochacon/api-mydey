@@ -151,7 +151,7 @@ class ServicesController extends Controller
 
     public function update(Request $request, $id){
         try{
-            $services = Services::find($id);
+            $services = Services::where('id',$id)->first();
             $services->update($request->all());
             return response()->json(["data"=>"ok"],200);
         }catch (Exception $e) {

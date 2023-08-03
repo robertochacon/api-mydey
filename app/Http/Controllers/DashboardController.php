@@ -39,12 +39,11 @@ class DashboardController extends Controller
     public function index()
     {
         try{
-            $data[] = 0;
 
-            //invoice
-            // $data['invoice'][] = DB::select("SELECT SUM(total) as day, COUNT(id) as total_day FROM invoice_quote WHERE DATE(created_at) = CURDATE() AND type = 'invoice'");
-            // $data['invoice'][] = DB::select("SELECT SUM(total) as week, COUNT(id) as total_week FROM invoice_quote WHERE YEARWEEK(`created_at`, 1) = YEARWEEK(CURDATE(), 1) AND type = 'invoice'");
-            // $data['invoice'][] = DB::select("SELECT SUM(total) as month, COUNT(id) as total_month FROM invoice_quote WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND type = 'invoice'");
+            //quotes
+            // $data['quote'][] = DB::select("SELECT COUNT(id) as total_day FROM quotes WHERE DATE(created_at) = CURDATE() AND status = 'process'");
+            // $data['quote'][] = DB::select("SELECT COUNT(id) as total_week FROM quotes WHERE YEARWEEK(`created_at`, 1) = YEARWEEK(CURDATE(), 1) AND status = 'process'");
+            // $data['quote'][] = DB::select("SELECT COUNT(id) as total_month FROM quotes WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND status = 'process'");
             //quote
             // $data['quote'][] = DB::select("SELECT SUM(total) as day, COUNT(id) as total_day FROM invoice_quote WHERE DATE(created_at) = CURDATE() AND type = 'quote'");
             // $data['quote'][] = DB::select("SELECT SUM(total) as week, COUNT(id) as total_week FROM invoice_quote WHERE YEARWEEK(`created_at`, 1) = YEARWEEK(CURDATE(), 1) AND type = 'quote'");

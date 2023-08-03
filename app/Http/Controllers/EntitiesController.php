@@ -4,18 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Entities;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EntitiesController extends Controller
 {
 
      /**
      * @OA\Get (
-     *     path="/api/entities",
+     *     path="/api/entities/all/{id}/",
      *      operationId="all_entities",
      *     tags={"Entities"},
      *     security={{ "apiAuth": {} }},
      *     summary="All entities",
      *     description="All entities",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="OK",
@@ -38,7 +45,29 @@ class EntitiesController extends Controller
     public function index(Request $request, $id_user)
     {
         $entities = Entities::where('id_user',$id_user)->get();
-        return response()->json(["data"=>$entities],200);
+        $data = [];
+        foreach ($entities as $key => $value) {
+            $quotes = [];
+
+            //process quotes
+            $quotes['process'][] = DB::select("SELECT COUNT(*) as total_day FROM quotes WHERE id_entity = {$value->id} AND DATE(created_at) = CURDATE() AND status = 'process'")[0];
+            $quotes['process'][] = DB::select("SELECT COUNT(*) as total_week FROM quotes WHERE id_entity = {$value->id} AND YEARWEEK(`created_at`, 1) = YEARWEEK(CURDATE(), 1) AND status = 'process'")[0];
+            $quotes['process'][] = DB::select("SELECT COUNT(*) as total_month FROM quotes WHERE id_entity = {$value->id} AND MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND status = 'process'")[0];
+            
+            //process active
+            $quotes['active'][] = DB::select("SELECT COUNT(*) as total_day FROM quotes WHERE id_entity = {$value->id} AND DATE(created_at) = CURDATE() AND status = 'active'")[0];
+            $quotes['active'][] = DB::select("SELECT COUNT(*) as total_week FROM quotes WHERE id_entity = {$value->id} AND YEARWEEK(`created_at`, 1) = YEARWEEK(CURDATE(), 1) AND status = 'active'")[0];
+            $quotes['active'][] = DB::select("SELECT COUNT(*) as total_month FROM quotes WHERE id_entity = {$value->id} AND MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND status = 'active'")[0];
+            
+            //process inactive
+            $quotes['inactive'][] = DB::select("SELECT COUNT(*) as total_day FROM quotes WHERE id_entity = {$value->id} AND DATE(created_at) = CURDATE() AND status = 'inactive'")[0];
+            $quotes['inactive'][] = DB::select("SELECT COUNT(*) as total_week FROM quotes WHERE id_entity = {$value->id} AND YEARWEEK(`created_at`, 1) = YEARWEEK(CURDATE(), 1) AND status = 'inactive'")[0];
+            $quotes['inactive'][] = DB::select("SELECT COUNT(*) as total_month FROM quotes WHERE id_entity = {$value->id} AND MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE()) AND status = 'inactive'")[0];
+            
+            $value["quotes"] = $quotes;
+            $data[] = $value;
+        }
+        return response()->json(["data"=>$data],200);
     }
 
      /**
